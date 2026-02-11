@@ -30,11 +30,11 @@ EOT
     resource_group_name  = string
     edge_zone            = optional(string)
     public_ip_address_id = optional(string)
-    sku                  = optional(string, "Standard")
-    sku_tier             = optional(string, "Regional")
+    sku                  = optional(string) # Default: "Standard"
+    sku_tier             = optional(string) # Default: "Regional"
     subnet_id            = optional(string)
     tags                 = optional(map(string))
-    frontend_ip_configuration = optional(object({
+    frontend_ip_configuration = optional(list(object({
       gateway_load_balancer_frontend_ip_configuration_id = optional(string)
       name                                               = string
       private_ip_address                                 = optional(string)
@@ -44,7 +44,15 @@ EOT
       public_ip_prefix_id                                = optional(string)
       subnet_id                                          = optional(string)
       zones                                              = optional(set(string))
-    }))
+    })))
   }))
+  validation {
+    condition = alltrue([
+      for k, v in var.lbs : (
+        v.frontend_ip_configuration == null || (length(v.frontend_ip_configuration) >= 1)
+      )
+    ])
+    error_message = "Each frontend_ip_configuration list must contain at least 1 items"
+  }
 }
 

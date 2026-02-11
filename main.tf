@@ -12,7 +12,7 @@ resource "azurerm_lb" "lbs" {
   tags                 = each.value.tags
 
   dynamic "frontend_ip_configuration" {
-    for_each = each.value.frontend_ip_configuration != null ? [each.value.frontend_ip_configuration] : []
+    for_each = each.value.frontend_ip_configuration != null ? each.value.frontend_ip_configuration : []
     content {
       gateway_load_balancer_frontend_ip_configuration_id = frontend_ip_configuration.value.gateway_load_balancer_frontend_ip_configuration_id
       name                                               = frontend_ip_configuration.value.name
