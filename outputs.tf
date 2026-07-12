@@ -1,3 +1,7 @@
+output "lbs_id" {
+  description = "Map of id values across all lbs, keyed the same as var.lbs"
+  value       = { for k, v in azurerm_lb.lbs : k => v.id }
+}
 output "lbs_edge_zone" {
   description = "Map of edge_zone values across all lbs, keyed the same as var.lbs"
   value       = { for k, v in azurerm_lb.lbs : k => v.edge_zone }
