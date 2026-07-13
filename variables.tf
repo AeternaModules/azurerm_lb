@@ -30,8 +30,8 @@ EOT
     resource_group_name  = string
     edge_zone            = optional(string)
     public_ip_address_id = optional(string)
-    sku                  = optional(string) # Default: "Standard"
-    sku_tier             = optional(string) # Default: "Regional"
+    sku                  = optional(string)
+    sku_tier             = optional(string)
     subnet_id            = optional(string)
     tags                 = optional(map(string))
     frontend_ip_configuration = optional(list(object({
@@ -46,22 +46,6 @@ EOT
       zones                                              = optional(set(string))
     })))
   }))
-  validation {
-    condition = alltrue([
-      for k, v in var.lbs : (
-        v.frontend_ip_configuration == null || (length(v.frontend_ip_configuration) >= 1)
-      )
-    ])
-    error_message = "Each frontend_ip_configuration list must contain at least 1 items"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.lbs : (
-        v.edge_zone == null || (length(v.edge_zone) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
   # --- Unconfirmed validation candidates, derived from azurerm_lb's provider source ---
   # Not auto-enabled: either a bespoke provider validator we can't safely translate,
   # or a path that crosses a list-typed block (needs its own for_each wrapping).
@@ -82,6 +66,9 @@ EOT
   #   source:    [from resourcegroups.ValidateName: invalid when len(value) == 0]
   # path: resource_group_name
   #   source:    [from resourcegroups.ValidateName] !matched
+  # path: edge_zone
+  #   condition: length(value) > 0
+  #   message:   must not be empty
   # path: sku
   #   source:    validation.StringInSlice value list is not a literal []string - likely a generated PossibleValuesFor*() helper; resolve separately
   # path: sku_tier
