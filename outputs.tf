@@ -26,10 +26,6 @@ output "lbs_private_ip_addresses" {
   description = "Map of private_ip_addresses values across all lbs, keyed the same as var.lbs"
   value       = { for k, v in azurerm_lb.lbs : k => v.private_ip_addresses if v.private_ip_addresses != null && length(v.private_ip_addresses) > 0 }
 }
-output "lbs_public_ip_address_id" {
-  description = "Map of public_ip_address_id values across all lbs, keyed the same as var.lbs"
-  value       = { for k, v in azurerm_lb.lbs : k => v.public_ip_address_id if v.public_ip_address_id != null && length(v.public_ip_address_id) > 0 }
-}
 output "lbs_resource_group_name" {
   description = "Map of resource_group_name values across all lbs, keyed the same as var.lbs"
   value       = { for k, v in azurerm_lb.lbs : k => v.resource_group_name if v.resource_group_name != null && length(v.resource_group_name) > 0 }
@@ -41,10 +37,6 @@ output "lbs_sku" {
 output "lbs_sku_tier" {
   description = "Map of sku_tier values across all lbs, keyed the same as var.lbs"
   value       = { for k, v in azurerm_lb.lbs : k => v.sku_tier if v.sku_tier != null && length(v.sku_tier) > 0 }
-}
-output "lbs_subnet_id" {
-  description = "Map of subnet_id values across all lbs, keyed the same as var.lbs"
-  value       = { for k, v in azurerm_lb.lbs : k => v.subnet_id if v.subnet_id != null && length(v.subnet_id) > 0 }
 }
 output "lbs_tags" {
   description = "Map of tags values across all lbs, keyed the same as var.lbs"

@@ -1,15 +1,13 @@
 resource "azurerm_lb" "lbs" {
   for_each = var.lbs
 
-  location             = each.value.location
-  name                 = each.value.name
-  resource_group_name  = each.value.resource_group_name
-  edge_zone            = each.value.edge_zone
-  public_ip_address_id = each.value.public_ip_address_id
-  sku                  = each.value.sku
-  sku_tier             = each.value.sku_tier
-  subnet_id            = each.value.subnet_id
-  tags                 = each.value.tags
+  location            = each.value.location
+  name                = each.value.name
+  resource_group_name = each.value.resource_group_name
+  edge_zone           = each.value.edge_zone
+  sku                 = each.value.sku
+  sku_tier            = each.value.sku_tier
+  tags                = each.value.tags
 
   dynamic "frontend_ip_configuration" {
     for_each = each.value.frontend_ip_configuration != null ? each.value.frontend_ip_configuration : []
